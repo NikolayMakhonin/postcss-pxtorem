@@ -151,10 +151,15 @@ module.exports = (options = {}) => {
     Declaration(decl) {
       if (isExcludeFile) return;
 
+      let parent = decl.parent
+      while (parent && !parent.selector) {
+        parent = parent.parent
+      }
+
       if (
         decl.value.indexOf("px") === -1 ||
         !satisfyPropList(decl.prop) ||
-        blacklistedSelector(opts.selectorBlackList, decl.parent.selector)
+        blacklistedSelector(opts.selectorBlackList, parent.selector)
       )
         return;
 
